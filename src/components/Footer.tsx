@@ -7,7 +7,7 @@ import {
 function Footer() {
   return (
     <footer className="sticky bottom-0 w-full border-t bg-background/95 backdrop-blur z-50">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-16">
         <div
           className="
             flex flex-col items-center justify-center gap-4 py-4

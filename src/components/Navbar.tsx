@@ -1,6 +1,7 @@
 import Link from "next/link";
-import DesktopNavbar from "./desktop/DesktopNavbar";
-import MobileNavbar from "./mobile/MobileNavbar";
+import DesktopNavbar from "@/components/desktop/DesktopNavbar";
+import MobileNavbar from "@/components/mobile/MobileNavbar";
+import ModeToggler from "@/components/ModeToggler";
 
 function Navbar() {
   return <nav className="sticky top-0 w-full border-b 
@@ -15,8 +16,8 @@ function Navbar() {
                   </Link>
                 </div>
 
-               <DesktopNavbar />
-               
+               <DesktopNavbar /> 
+               <ModeToggler />
               </div>
             </div>
         </nav>;
