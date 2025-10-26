@@ -38,14 +38,14 @@ export default function RootLayout({
         >
           <div className="min-h-screen">
             <Navbar />
-            <main className="py-8">
+            <main className="py-8 px-4">
               <div className="max-w-7xl mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  <div className="hidden lg:block lg:col-span-3">
-                  </div>
-                  <div className="lg:col-span-9">
+                  <div className="hidden lg:block lg:col-span-1" />
+                  <div className="lg:col-span-10">
                     {children}
                   </div>
+                  <div className="hidden lg:block lg:col-span-1" />
                 </div>
               </div>
             </main>

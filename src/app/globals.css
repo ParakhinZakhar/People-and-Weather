@@ -2,7 +2,6 @@
 @import "tailwindcss/theme";
 @import "tailwindcss/utilities";
 
-/* === Custom Theme Tokens (Tailwind v4 syntax) === */
 @theme {
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(0 0% 3.9%);
@@ -25,7 +24,6 @@
   --color-ring: hsl(0 0% 3.9%);
   --radius: 0.5rem;
 
-  /* Charts */
   --color-chart-1: hsl(12 76% 61%);
   --color-chart-2: hsl(173 58% 39%);
   --color-chart-3: hsl(197 37% 24%);
@@ -33,7 +31,6 @@
   --color-chart-5: hsl(27 87% 67%);
 }
 
-/* === Dark Theme Overrides === */
 .dark {
   --color-background: hsl(0 0% 3.9%);
   --color-foreground: hsl(0 0% 98%);
@@ -61,11 +58,11 @@
   --color-chart-5: hsl(340 75% 55%);
 }
 
-/* === Base & Utilities Layers === */
 body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: var(--color-background);
   color: var(--color-foreground);
+  font-size: 1rem;
 }
 
 @layer utilities {
@@ -77,5 +74,23 @@ body {
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+}
+
+@media (max-width: 640px) {
+  body, body * {
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  body, body * {
+    font-size: 0.875rem;;
+  }
+}
+
+@media (min-width: 1024px) {
+  body, body * {
+    font-size: 1rem;
   }
 }
