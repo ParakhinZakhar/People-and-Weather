@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { useUIFlow } from "@/providers/UIFlowProvider";
 import DesktopNavbar from "@/components/desktop/DesktopNavbar";
 import MobileNavbar from "@/components/mobile/MobileNavbar";
 import ModeToggler from "@/components/ModeToggler";
 
 function Navbar() {
+  const { goToBanner } = useUIFlow();
+
   return <nav className="sticky top-0 w-full border-b 
           bg-background/95 backdrop-blur z-50">
             <div className="max-w-7xl mx-auto px-4">
@@ -11,7 +16,8 @@ function Navbar() {
                 <MobileNavbar />
                 
                 <div className="flex items-center">
-                  <Link href="/" className="text-xl font-bold text-primary font-mono tracking-wider">
+                  <Link href="/" onClick={goToBanner}
+                  className="text-xl font-bold text-primary font-mono tracking-wider">
                   People & Weather
                   </Link>
                 </div>
