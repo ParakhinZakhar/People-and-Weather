@@ -2,7 +2,7 @@
 
 import { useUIFlow } from "@/providers/UIFlowProvider";
 import HomeBanner from "@/components/HomeBanner";
-import UserInputForm from "@/components/UserInputForm";
+import NewUserForm from "@/components/NewUserForm";
 import UserCardsList from "@/components/UserCardsList";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -28,7 +28,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <UserInputForm />
+            <NewUserForm />
           </motion.div>
         )}
         {step === "users" && (
