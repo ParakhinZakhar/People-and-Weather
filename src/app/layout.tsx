@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/providers/ThemeProvider"
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { UIFlowProvider } from "@/providers/UIFlowProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -36,21 +37,23 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen">
-            <Navbar />
-            <main className="py-8 px-4">
-              <div className="max-w-7xl mx-auto px-4">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  <div className="hidden lg:block lg:col-span-1" />
-                  <div className="lg:col-span-10">
-                    {children}
+          <UIFlowProvider>
+            <div className="min-h-screen">
+              <Navbar />
+              <main className="py-8 px-4">
+                <div className="max-w-7xl mx-auto px-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="hidden lg:block lg:col-span-1" />
+                    <div className="lg:col-span-10">
+                      {children}
+                    </div>
+                    <div className="hidden lg:block lg:col-span-1" />
                   </div>
-                  <div className="hidden lg:block lg:col-span-1" />
                 </div>
-              </div>
-            </main>
-            <Footer />
-          </div>
+              </main>
+              <Footer />
+            </div>
+          </UIFlowProvider>
         </ThemeProvider>
       </body>
     </html>

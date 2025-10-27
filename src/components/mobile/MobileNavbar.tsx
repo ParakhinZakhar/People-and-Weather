@@ -13,9 +13,10 @@ import {
   SheetTrigger 
 } from "@/components/ui/sheet";
 import { useState } from "react";
-
+import { useUIFlow } from "@/providers/UIFlowProvider";
 function MobileNavbar() {
   const [ showMobileMenu, setShowMobileMenu ] = useState(false);
+  const { goToForm, goToUsers, step } = useUIFlow();
   
   return <div className="flex md:hidden items-center space-x-2">
     <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
@@ -29,11 +30,13 @@ function MobileNavbar() {
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
         <nav className="flex flex-col space-y-4 mt-6">
-          <Button variant="ghost" className="flex items-center gap-3 justify-start">
+          <Button  variant={step === "form" ? "outline" : "ghost"}
+            onClick={goToForm} className="flex items-center gap-3 justify-start">
             <UserRoundPlus className="w-4 h-4" />
              New User
           </Button>
-          <Button variant="ghost" className="flex items-center gap-3 justify-start">
+          <Button variant={step === "users" ? "outline" : "ghost"}
+            onClick={goToUsers} className="flex items-center gap-3 justify-start">
             <UsersRound className="w-4 h-4" />
              Saved Users
           </Button>
