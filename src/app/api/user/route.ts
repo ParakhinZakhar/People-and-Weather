@@ -1,20 +1,21 @@
-import { NextResponse } from 'next/server'
-import type { User } from '@/app/types/user'
+import { NextResponse } from 'next/server';
+import type { apiRandomUser } from '@/app/types/apiUser';
+import type { User } from '@/app/types/user';
+import { mapApiUserToUser } from '@/lib/mapping/userMapper';
 
-export async function GET() {
+export const GET = async () => {
   try {
-    const res = await fetch('https://randomuser.me/api/')
-    if (!res.ok) throw new Error('Failed to fetch random user')
+    const res = await fetch('https://randomuser.me/api/');
+    if (!res.ok) throw new Error('Failed to fetch user');
 
-    const data = await res.json()
-    const user: User = data.results[0]
+    const { results }: { results: apiRandomUser[] } = await res.json();
+    const apiUser = results[0];
 
-    return NextResponse.json(user)
-  } catch (error) {
-    console.error('Error fetching user:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch user' },
-      { status: 500 }
-    )
+    const user: User = mapApiUserToUser(apiUser);
+
+    return NextResponse.json(user);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 });
   }
-}
+};

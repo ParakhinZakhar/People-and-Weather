@@ -1,10 +1,10 @@
 "use client";
 
-import { useUIFlow } from "@/providers/UIFlowProvider";
-import HomeBanner from "@/components/HomeBanner";
-import UserInputForm from "@/components/UserInputForm";
-import UserCardsList from "@/components/UserCardsList";
-import { motion, AnimatePresence } from "framer-motion";
+import { useUIFlow } from '@/providers/UIFlowProvider'
+import HomeBanner from '@/components/HomeBanner'
+import NewUsers from '@/components/NewUsers'
+import SavedUsers from '@/components/SavedUsers'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Home() {
   const { step } = useUIFlow();
@@ -28,7 +28,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <UserInputForm />
+            <NewUsers />
           </motion.div>
         )}
         {step === "users" && (
@@ -38,7 +38,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <UserCardsList />
+            <SavedUsers />
           </motion.div>
         )}
       </AnimatePresence>

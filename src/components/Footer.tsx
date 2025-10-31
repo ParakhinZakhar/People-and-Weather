@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Link from 'next/link';
 import { 
   SquareCode,
   Mail,
-  Linkedin } from "lucide-react";
+  Linkedin } from 'lucide-react';
 
 function Footer() {
   return (

@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react'
 
-type UIStep = "banner" | "form" | "users";
+type UIStep = 'banner' | 'form' | 'users'
 
 interface UIFlowContextType {
   step: UIStep;
@@ -14,15 +14,15 @@ interface UIFlowContextType {
 const UIFlowContext = createContext<UIFlowContextType | undefined>(undefined);
 
 export const UIFlowProvider = ({ children }: { children: React.ReactNode }) => {
-  const [step, setStep] = useState<UIStep>("banner");
+  const [step, setStep] = useState<UIStep>('banner');
 
   return (
     <UIFlowContext.Provider
       value={{
         step,
-        goToBanner: () => setStep("banner"),
-        goToForm: () => setStep("form"),
-        goToUsers: () => setStep("users"),
+        goToBanner: () => setStep('banner'),
+        goToForm: () => setStep('form'),
+        goToUsers: () => setStep('users'),
       }}
     >
       {children}
@@ -32,6 +32,6 @@ export const UIFlowProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useUIFlow = () => {
   const ctx = useContext(UIFlowContext);
-  if (!ctx) throw new Error("useUIFlow must be used within UIFlowProvider");
+  if (!ctx) throw new Error('useUIFlow must be used within UIFlowProvider');
   return ctx;
 };
