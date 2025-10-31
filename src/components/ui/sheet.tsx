@@ -1,15 +1,12 @@
 "use client";
 
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import { X } from "lucide-react";
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import { X } from 'lucide-react';
 
-// ─────────────────────────────────────────────
-// VARIANTS
-// ─────────────────────────────────────────────
 const sheetVariants = cva(
   "flex flex-col bg-background text-foreground shadow-xl transition-transform ease-in-out duration-300",
   {
@@ -22,10 +19,18 @@ const sheetVariants = cva(
       },
     },
     defaultVariants: {
-      side: "right",
+      side: 'left',
     },
   }
 );
+
+const SheetContext = React.createContext<{
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}>({
+  open: false,
+  onOpenChange: () => {},
+});
 
 interface SheetProps extends VariantProps<typeof sheetVariants> {
   open: boolean;
@@ -33,110 +38,92 @@ interface SheetProps extends VariantProps<typeof sheetVariants> {
   children: React.ReactNode;
 }
 
-// ─────────────────────────────────────────────
-// MAIN SHEET COMPONENT
-// ─────────────────────────────────────────────
 export function Sheet({
   open,
   onOpenChange,
-  side = "right",
+  side = 'left',
   children,
 }: SheetProps) {
   return (
-    <Drawer
-      anchor={side ?? "right"}
-      open={open}
-      onClose={() => onOpenChange(false)}
-      ModalProps={{ keepMounted: true }}
-      PaperProps={{
-        className: cn(sheetVariants({ side })),
-      }}
-    >
+    <SheetContext.Provider value={{ open, onOpenChange }}>
       {children}
-    </Drawer>
+    </SheetContext.Provider>
   );
 }
 
-// ─────────────────────────────────────────────
-// TRIGGER (аналог Radix SheetTrigger)
-// ─────────────────────────────────────────────
 interface SheetTriggerProps {
   asChild?: boolean;
-  children: React.ReactElement<
-    { onClick?: React.MouseEventHandler<HTMLButtonElement> },
-    any
-  >;
-  onOpen: () => void;
+  children: React.ReactElement;
 }
 
-export const SheetTrigger: React.FC<SheetTriggerProps> = ({
-  asChild,
-  children,
-  onOpen,
-}) => {
-  if (asChild) {
-    // ✅ Безпечно додаємо onClick
-    return React.cloneElement(children, {
-      onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-        children.props.onClick?.(e);
-        onOpen();
-      },
-    });
+export const SheetTrigger = React.forwardRef<HTMLElement, SheetTriggerProps>(
+  ({ asChild, children }, ref) => {
+    const { onOpenChange } = React.useContext(SheetContext);
+
+    if (asChild) {
+      return React.cloneElement(children, {
+        ...children.props,
+        ref,
+        onClick: (e: React.MouseEvent) => {
+          children.props.onClick?.(e);
+          onOpenChange(true);
+        },
+      });
+    }
+
+    return (
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        onClick={() => onOpenChange(true)}
+        type="button"
+      >
+        {children}
+      </button>
+    );
   }
-
-  return (
-    <button onClick={onOpen} type="button">
-      {children}
-    </button>
-  );
-};
-
-
-// ─────────────────────────────────────────────
-// INTERNAL COMPONENTS
-// ─────────────────────────────────────────────
-export const SheetHeader = ({
-  title,
-  description,
-  onClose,
-  className,
-}: {
-  title?: string;
-  description?: string;
-  onClose?: () => void;
-  className?: string;
-}) => (
-  <div
-    className={cn(
-      "flex items-center justify-between p-4 border-b border-gray-200",
-      className
-    )}
-  >
-    <div className="flex flex-col">
-      {title && <h2 className="text-lg font-semibold">{title}</h2>}
-      {description && <p className="text-sm text-gray-500">{description}</p>}
-    </div>
-    {onClose && (
-      <IconButton onClick={onClose} size="small" className="hover:bg-gray-100">
-        <X className="h-5 w-5" />
-      </IconButton>
-    )}
-  </div>
 );
+
+SheetTrigger.displayName = "SheetTrigger";
+
+interface SheetContentProps extends VariantProps<typeof sheetVariants> {
+  children: React.ReactNode;
+  className?: string;
+}
 
 export const SheetContent = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => (
-  <div className={cn("flex-1 overflow-y-auto p-4", className)}>
-    {children}
-  </div>
-);
+  side = 'left',
+}: SheetContentProps) => {
+  const { open, onOpenChange } = React.useContext(SheetContext);
 
-export const SheetFooter = ({
+  return (
+    <Drawer
+      anchor={side ?? 'left'}
+      open={open}
+      onClose={() => onOpenChange(false)}
+      ModalProps={{ keepMounted: true }}
+      PaperProps={{
+        className: cn(sheetVariants({ side }), className),
+      }}
+    >
+      <div className="flex flex-col h-full">
+        {children}
+        <div className="mt-auto p-4 border-t">
+          <button
+            onClick={() => onOpenChange(false)}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+          >
+            <X className="w-4 h-4" />
+            Close Menu
+          </button>
+        </div>
+      </div>
+    </Drawer>
+  );
+};
+
+export const SheetHeader = ({
   children,
   className,
 }: {
@@ -145,7 +132,7 @@ export const SheetFooter = ({
 }) => (
   <div
     className={cn(
-      "flex justify-end gap-2 p-4 border-t border-gray-200",
+      "flex flex-col space-y-2 p-6 border-b",
       className
     )}
   >
@@ -160,5 +147,36 @@ export const SheetTitle = ({
   children: React.ReactNode;
   className?: string;
 }) => (
-  <h2 className={cn("text-lg font-semibold", className)}>{children}</h2>
+  <h2 className={cn("text-lg font-semibold", className)}>
+    {children}
+  </h2>
+);
+
+export const SheetDescription = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <p className={cn("text-sm text-muted-foreground", className)}>
+    {children}
+  </p>
+);
+
+export const SheetFooter = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div
+    className={cn(
+      "flex justify-end gap-2 p-4 border-t",
+      className
+    )}
+  >
+    {children}
+  </div>
 );

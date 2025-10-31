@@ -12,10 +12,10 @@ interface UserAvatarProps {
 }
 
 const sizeValues = {
-  sm: 32,   // 32px
-  md: 64,   // 64px
-  lg: 96,   // 96px
-  xl: 128,  // 128px
+  sm: 32,   
+  md: 64, 
+  lg: 96,  
+  xl: 128, 
 };
 
 export const UserAvatar: React.FC<UserAvatarProps> = ({

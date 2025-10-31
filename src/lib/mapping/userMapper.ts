@@ -1,5 +1,5 @@
 import type { apiRandomUser } from '@/app/types/apiUser'
-import type { User } from '@/app/types/user';
+import type { User } from '@/app/types/user'
 
 export const mapApiUserToUser = (apiUser: apiRandomUser): User => ({
   gender: apiUser.gender,

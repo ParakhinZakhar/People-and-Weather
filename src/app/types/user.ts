@@ -6,6 +6,7 @@ export interface User {
     last: string;
   };
   location: {
+    name?: string; 
     coordinates: {
       latitude: string;
       longitude: string;

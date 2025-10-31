@@ -1,0 +1,5 @@
+{
+  "title": "Welcome!",
+  "intro": "This app allows you to view and save random user information fetched from an API. According to the user location, the current weather is also displayed. Fetch a random user and see their information and weather.",
+  "details": "You will see the details of the fetched user, including name, gender, location, email, profile picture, and current weather. You can save this user to local storage or check more weather details in a modal."
+}
