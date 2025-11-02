@@ -115,7 +115,6 @@ export const SheetContent = ({
             className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             <X className="w-4 h-4" />
-            Close Menu
           </button>
         </div>
       </div>

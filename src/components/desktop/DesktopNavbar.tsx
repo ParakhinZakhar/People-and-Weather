@@ -3,9 +3,9 @@
 import {
   UserRoundPlus,
   UsersRound
-} from "lucide-react";
-import { useUIFlow } from "@/providers/UIFlowProvider";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react'
+import { useUIFlow } from '@/providers/UIFlowProvider'
+import { Button } from '@/components/ui/button'
 
 function DesktopNavbar() {
   const { goToForm, goToUsers, step } = useUIFlow();
