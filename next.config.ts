@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
         hostname: 'openweathermap.org',
         pathname: '/img/wn/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        pathname: '/api/portraits/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'basmilius.github.io',
+        pathname: '/weather-icons/**',
+      },
     ],
   },
 };
