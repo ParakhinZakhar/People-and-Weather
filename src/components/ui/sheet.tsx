@@ -40,7 +40,6 @@ interface SheetProps extends VariantProps<typeof sheetVariants> {
 export function Sheet({
   open,
   onOpenChange,
-  side = 'left',
   children,
 }: SheetProps) {
   return (
