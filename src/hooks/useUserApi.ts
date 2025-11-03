@@ -93,7 +93,6 @@ export const useUserApi = (setUsers: React.Dispatch<React.SetStateAction<User[]>
       }
 
       const weather: WeatherData = await res.json();
-      console.log('Weather data received:', weather);
       setWeatherModal({ user, weather });
     } catch (err) {
       alert('Weather data could not be fetched: ' + (err instanceof Error ? err.message : 'Unknown error'));

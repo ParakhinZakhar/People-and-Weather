@@ -22,8 +22,6 @@ export const GET = async (req: Request) => {
       );
     }
 
-    console.log("Fetching weather for:", { lat, lon });
-
     const params = {
       latitude: Number(lat),
       longitude: Number(lon),
@@ -36,16 +34,12 @@ export const GET = async (req: Request) => {
     const url = "https://api.open-meteo.com/v1/forecast";
     const responses = await fetchWeatherApi(url, params);
     
-    console.log("API responses received:", responses.length);
     
     const response = responses[0];
 
     const utcOffsetSeconds = response.utcOffsetSeconds();
     const current = response.current();
     const daily = response.daily();
-
-    console.log("Current exists:", !!current);
-    console.log("Daily exists:", !!daily);
 
     if (!current || !daily) {
       throw new Error("Missing current or daily data from API");
@@ -78,19 +72,10 @@ export const GET = async (req: Request) => {
     try {
       const tempMaxVar = daily.variables(0);
       const tempMinVar = daily.variables(1);
-      
-      console.log("Daily vars exist:", { max: !!tempMaxVar, min: !!tempMinVar });
 
       if (tempMaxVar && tempMinVar) {
         const tempMaxArray = tempMaxVar.valuesArray();
         const tempMinArray = tempMinVar.valuesArray();
-        
-        console.log("Arrays:", { 
-          maxLength: tempMaxArray?.length, 
-          minLength: tempMinArray?.length,
-          maxValue: tempMaxArray?.[0],
-          minValue: tempMinArray?.[0]
-        });
 
         if (tempMaxArray && tempMaxArray.length > 0) {
           tempMax = round2(tempMaxArray[0]);
@@ -115,8 +100,6 @@ export const GET = async (req: Request) => {
         temperature_max: tempMax
       }
     };
-
-    console.log("Final weather data:", weatherData);
 
     return NextResponse.json(weatherData);
 
