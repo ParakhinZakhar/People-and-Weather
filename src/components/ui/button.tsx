@@ -40,8 +40,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : MuiButton;
     const extraProps = {
-      color: (props as unkown).color ?? "inherit",
-      variant: (props as unknown).variant ?? "text",
+      color: (props as any).color ?? "inherit",
+      variant: (props as any).variant ?? "text",
       disableElevation: true,
     };
 
