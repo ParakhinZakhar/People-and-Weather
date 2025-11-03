@@ -22,14 +22,24 @@ export interface WeatherModal {
 }
 
 export const useUserApi = (setUsers: React.Dispatch<React.SetStateAction<User[]>>) => {
-  const [loading, setLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  
   const [isGenerating, setIsGenerating] = useState(false);
+  
   const [error, setError] = useState<string | null>(null);
   const [weatherModal, setWeatherModal] = useState<WeatherModal | null>(null);
 
-  const handleGenerateUser = async () => {
+  /**
+   * @param isInitial - true for first load (shows Loader), false for subsequent adds (shows Skeleton)
+   */
+  const handleGenerateUser = async (isInitial = false) => {
     try {
-      setIsGenerating(true);
+      if (isInitial) {
+        setIsInitialLoading(true);
+      } else {
+        setIsGenerating(true);
+      }
+      
       setError(null);
 
       const resUser = await fetch('/api/user?cacheBuster=' + Date.now());
@@ -45,7 +55,7 @@ export const useUserApi = (setUsers: React.Dispatch<React.SetStateAction<User[]>
 
       if (!geoData.displayName || geoData.displayName.includes('ussia')) {
         console.warn('Location not found, retrying...');
-        return handleGenerateUser();
+        return handleGenerateUser(isInitial);
       }
 
       const updatedUser: User = {
@@ -58,11 +68,16 @@ export const useUserApi = (setUsers: React.Dispatch<React.SetStateAction<User[]>
       };
 
       setUsers((prev) => [...prev, updatedUser]);
+      
     } catch (err) {
       console.error(err);
       setError('Error: user did not load');
     } finally {
-      setIsGenerating(false);
+      if (isInitial) {
+        setIsInitialLoading(false);
+      } else {
+        setIsGenerating(false);
+      }
     }
   };
 
@@ -74,7 +89,6 @@ export const useUserApi = (setUsers: React.Dispatch<React.SetStateAction<User[]>
       
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
-        console.error('Weather API error:', errorData);
         throw new Error(errorData.error || 'Failed to fetch weather');
       }
 
@@ -82,13 +96,13 @@ export const useUserApi = (setUsers: React.Dispatch<React.SetStateAction<User[]>
       console.log('Weather data received:', weather);
       setWeatherModal({ user, weather });
     } catch (err) {
-      console.error('Weather fetch error:', err);
       alert('Weather data could not be fetched: ' + (err instanceof Error ? err.message : 'Unknown error'));
     }
   };
 
   return {
-    loading,
+    isInitialLoading,
+    isGenerating,
     error,
     handleGenerateUser,
     weatherModal,

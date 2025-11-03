@@ -1,13 +1,21 @@
 "use client";
 
-import React from "react";
-import { CircularProgress, Typography } from "@mui/material";
+import React from 'react'
+import { CircularProgress, Typography } from '@mui/material'
 
 const Loader: React.FC = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center py-12 gap-3">
-      <CircularProgress />
-      <Typography variant="body2" className="text-gray-600">
+      <CircularProgress 
+        className="text-primary"
+        sx={{ 
+          color: 'hsl(var(--primary))' 
+        }}
+      />
+      <Typography 
+        variant="body2" 
+        className="text-muted-foreground text-sm sm:text-base"
+      >
         Loading...
       </Typography>
     </div>
