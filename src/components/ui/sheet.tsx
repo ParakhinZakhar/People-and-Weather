@@ -4,7 +4,6 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import { X } from 'lucide-react';
 
 const sheetVariants = cva(

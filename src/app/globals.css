@@ -65,6 +65,12 @@ body {
   font-size: 1rem;
 }
 
+.MuiDrawer-paper {
+  background-color: rgba(var(--background-rgb), 0.85) !important;
+  color: var(--foreground) !important;
+  backdrop-filter: blur(8px);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

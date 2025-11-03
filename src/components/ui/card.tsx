@@ -40,8 +40,8 @@ export const UserCard: React.FC<UserCardProps> = ({
     } else {
       return (
         <div className="flex flex-col">
-          <span className="text-gray-500 text-sm">{label}</span>
-          <span className="font-medium text-gray-800">{value || "—"}</span>
+          <span className="text-muted-foreground text-sm">{label}</span>
+          <span className="font-medium text-foreground">{value || "—"}</span>
         </div>
       );
     }
@@ -51,7 +51,7 @@ export const UserCard: React.FC<UserCardProps> = ({
     <Card
       className="
         rounded-2xl shadow-md hover:shadow-lg transition-all duration-300
-        border border-gray-200 bg-white flex flex-col items-center
+        border border-border bg-card text-card-foreground flex flex-col items-center
         p-4 sm:p-6
       "
     >
@@ -62,11 +62,11 @@ export const UserCard: React.FC<UserCardProps> = ({
           size="xl"
         />
 
-        <Typography variant="h6" className="font-semibold text-gray-800 mt-1">
+        <Typography variant="h6" className="font-semibold text-foreground mt-1">
           {user.name.first} {user.name.last}
         </Typography>
 
-        <Divider className="w-full my-2" />
+        <Divider className="w-full my-2 bg-border" />
 
         <Grid container spacing={1.5} className="w-full">
           <Grid item xs={4}>
@@ -93,7 +93,7 @@ export const UserCard: React.FC<UserCardProps> = ({
 
       <CardActions
         className="
-          flex justify-center gap-3 w-full border-t border-gray-100 pt-4
+          flex justify-center gap-3 w-full border-t border-border pt-4
           flex-wrap
         "
       >
@@ -104,7 +104,7 @@ export const UserCard: React.FC<UserCardProps> = ({
         )}
 
         {handleShowWeather && (
-          <Button onClick={() => handleShowWeather(user)} variant="secondary" size="sm">
+          <Button onClick={() => handleShowWeather(user)} variant="outline" size="sm">
             <CloudSunRain className="mr-1 h-4 w-4" /> Weather
           </Button>
         )}
