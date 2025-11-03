@@ -1,20 +1,20 @@
 "use client";
 
-import { MenuIcon, UserRoundPlus, UsersRound } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { MenuIcon, UserRoundPlus, UsersRound } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { useState } from 'react';
-import { useUIFlow } from '@/providers/UIFlowProvider';
+} from '@/components/ui/sheet'
+import { useState } from 'react'
+import { useUIFlow } from '@/providers/UIFlowProvider'
 
 function MobileNavbar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const { goToForm, goToUsers, step } = useUIFlow();
+  const { goToForm, goToUsers } = useUIFlow();
 
   return (
     <div className="md:hidden">
@@ -33,7 +33,7 @@ function MobileNavbar() {
 
           <nav className="flex flex-col space-y-4 mt-6 px-2">
             <Button
-              variant={step === "form" ? "default" : "ghost"}
+              variant={"ghost"}
               onClick={() => {
                 goToForm();
                 setShowMobileMenu(false);
@@ -45,7 +45,7 @@ function MobileNavbar() {
             </Button>
 
             <Button
-              variant={step === "users" ? "default" : "ghost"}
+              variant={"ghost"}
               onClick={() => {
                 goToUsers();
                 setShowMobileMenu(false);

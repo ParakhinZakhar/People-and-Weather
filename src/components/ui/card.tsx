@@ -1,11 +1,14 @@
 "use client";
 
 import { User } from '@/app/types/user'
-import { Card, CardContent, CardActions, Grid, Typography, Divider } from '@mui/material'
+import { Card, CardContent, CardActions, Grid, Typography } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { Button } from '@/components/ui/button'
 import { CloudSunRain, Save, CircleX } from 'lucide-react'
 import { UserAvatar } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
+import { useTheme } from 'next-themes'
+import { useMemo } from 'react'
 
 interface UserCardProps {
   user: User;
@@ -28,6 +31,28 @@ export const UserCard: React.FC<UserCardProps> = ({
   handleDeleteSavedUser,
   handleShowWeather,
 }) => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
+  const muiTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: isDark ? 'dark' : 'light',
+          background: {
+            default: isDark ? 'hsl(0, 0%, 3.9%)' : 'hsl(0, 0%, 100%)',
+            paper: isDark ? 'hsl(0, 0%, 3.9%)' : 'hsl(0, 0%, 100%)',
+          },
+          text: {
+            primary: isDark ? 'hsl(0, 0%, 98%)' : 'hsl(0, 0%, 3.9%)',
+            secondary: isDark ? 'hsl(0, 0%, 63.9%)' : 'hsl(0, 0%, 45.1%)',
+          },
+          divider: isDark ? 'hsl(0, 0%, 14.9%)' : 'hsl(0, 0%, 89.8%)',
+        },
+      }),
+    [isDark]
+  );
+
   const renderField = (label: string, value: string, path: string) => {
     if (editable && handleInputChange) {
       return (
@@ -39,88 +64,126 @@ export const UserCard: React.FC<UserCardProps> = ({
       );
     } else {
       return (
-        <div className="flex flex-col">
-          <span className="text-gray-500 text-sm">{label}</span>
-          <span className="font-medium text-gray-800">{value || "—"}</span>
-        </div>
+        <Input
+          label={label}
+          value={value}
+          disabled
+          InputProps={{
+            readOnly: true,
+          }}
+        />
       );
     }
   };
 
   return (
-    <Card
-      className="
-        rounded-2xl shadow-md hover:shadow-lg transition-all duration-300
-        border border-gray-200 bg-white flex flex-col items-center
-        p-4 sm:p-6
-      "
-    >
-      <CardContent className="flex flex-col items-center text-center w-full space-y-4">
-        <UserAvatar
-          src={user.picture.medium}
-          alt={`${user.name.first} ${user.name.last}`}
-          size="xl"
-        />
-
-        <Typography variant="h6" className="font-semibold text-gray-800 mt-1">
-          {user.name.first} {user.name.last}
-        </Typography>
-
-        <Divider className="w-full my-2" />
-
-        <Grid container spacing={1.5} className="w-full">
-          <Grid item xs={4}>
-            {renderField("Title", user.name.title, "name.title")}
-          </Grid>
-          <Grid item xs={8}>
-            {renderField("First Name", user.name.first, "name.first")}
-          </Grid>
-
-          <Grid item xs={12}>
-            {renderField("Last Name", user.name.last, "name.last")}
-          </Grid>
-          <Grid item xs={12}>
-            {renderField("Gender", user.gender, "gender")}
-          </Grid>
-          <Grid item xs={12}>
-            {renderField("Email", user.email, "email")}
-          </Grid>
-          <Grid item xs={12}>
-            {renderField("Location", user.location.name, "location.name")}
-          </Grid>
-        </Grid>
-      </CardContent>
-
-      <CardActions
+    <ThemeProvider theme={muiTheme}>
+      <Card
         className="
-          flex justify-center gap-3 w-full border-t border-gray-100 pt-4
-          flex-wrap
+          rounded-2xl shadow-md hover:shadow-lg transition-all duration-300
+          border border-border bg-card text-card-foreground 
+          flex flex-col h-full w-full
         "
+        sx={{
+          backgroundColor: isDark ? 'hsl(0, 0%, 3.9%)' : 'hsl(0, 0%, 100%)',
+          borderColor: isDark ? 'hsl(0, 0%, 14.9%)' : 'hsl(0, 0%, 89.8%)',
+        }}
       >
-        {editable && handleSaveUser && (
-          <Button onClick={() => handleSaveUser(user)} variant="outline" size="sm">
-            <Save className="mr-1 h-4 w-4" /> Save
-          </Button>
-        )}
+        <CardContent className="flex flex-col items-center text-center w-full space-y-3 sm:space-y-4 p-4 sm:p-6">
+          <UserAvatar
+            src={user.picture.medium}
+            alt={`${user.name.first} ${user.name.last}`}
+            size="xl"
+            className="w-20 h-20 sm:w-24 sm:h-24"
+          />
 
-        {handleShowWeather && (
-          <Button onClick={() => handleShowWeather(user)} variant="secondary" size="sm">
-            <CloudSunRain className="mr-1 h-4 w-4" /> Weather
-          </Button>
-        )}
+          <Typography 
+            variant="h6" 
+            className="font-semibold text-foreground text-base sm:text-lg break-words w-full"
+            sx={{
+              color: isDark ? 'hsl(0, 0%, 98%)' : 'hsl(0, 0%, 3.9%)',
+            }}
+          >
+            {user.name.first} {user.name.last}
+          </Typography>
 
-        {editable && handleDeleteUser && (
-          <Button onClick={() => handleDeleteUser(index)} variant="destructive" size="sm">
-            <CircleX className="mr-1 h-4 w-4" /> Delete
-          </Button>
-        )}
+          <Grid container spacing={1.5} className="w-full">
+            <Grid item xs={12}>
+              {renderField("Title", user.name.title, "name.title")}
+            </Grid>
+            <Grid item xs={12}>
+              {renderField("First Name", user.name.first, "name.first")}
+            </Grid>
+            <Grid item xs={12}>
+              {renderField("Last Name", user.name.last, "name.last")}
+            </Grid>
+            <Grid item xs={12}>
+              {renderField("Gender", user.gender, "gender")}
+            </Grid>
+            <Grid item xs={12}>
+              {renderField("Email", user.email, "email")}
+            </Grid>
+            <Grid item xs={12}>
+              {renderField("Location", user.location.name, "location.name")}
+            </Grid>
+          </Grid>
+        </CardContent>
 
-        {!editable && handleDeleteSavedUser && (
-          <Button onClick={() => handleDeleteSavedUser(index)} variant="destructive" size="sm">
-            <CircleX className="mr-1 h-4 w-4" /> Delete
-          </Button>
-        )}
-      </CardActions>
-    </Card>
+        <CardActions
+          className="
+            flex justify-center gap-2 sm:gap-3 w-full 
+            border-t border-border pt-3 sm:pt-4 pb-3 sm:pb-4 px-4
+            flex-wrap mt-auto
+          "
+          sx={{
+            borderTopColor: isDark ? 'hsl(0, 0%, 14.9%)' : 'hsl(0, 0%, 89.8%)',
+          }}
+        >
+          {editable && handleSaveUser && (
+            <Button 
+              onClick={() => handleSaveUser(user)} 
+              variant="outline" 
+              size="sm"
+              className="flex-1 min-w-[80px] text-xs sm:text-sm"
+            >
+              <Save className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Save
+            </Button>
+          )}
+
+          {handleShowWeather && (
+            <Button 
+              onClick={() => handleShowWeather(user)} 
+              variant="outline" 
+              size="sm"
+              className="flex-1 min-w-[80px] text-xs sm:text-sm"
+            >
+              <CloudSunRain className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Weather
+            </Button>
+          )}
+
+          {editable && handleDeleteUser && (
+            <Button 
+              onClick={() => handleDeleteUser(index)} 
+              variant="destructive" 
+              size="sm"
+              className="flex-1 min-w-[80px] text-xs sm:text-sm"
+            >
+              <CircleX className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Delete
+            </Button>
+          )}
+
+          {!editable && handleDeleteSavedUser && (
+            <Button 
+              onClick={() => handleDeleteSavedUser(index)} 
+              variant="destructive" 
+              size="sm"
+              className="flex-1 min-w-[80px] text-xs sm:text-sm"
+            >
+              <CircleX className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Delete
+            </Button>
+          )}
+        </CardActions>
+      </Card>
+    </ThemeProvider>
   );
 };

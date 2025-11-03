@@ -18,22 +18,44 @@ export default function DesktopNewUsers() {
   const { toast, showToast, closeToast } = useToast();
 
   const { handleInputChange, handleSaveUser, handleDeleteUser } = useUserHandlers(setUsers, showToast);
-  const { handleGenerateUser, handleShowWeather, weatherModal, setWeatherModal, loading, error } = useUserApi(setUsers);
+  const { 
+    handleGenerateUser, 
+    handleShowWeather, 
+    weatherModal, 
+    setWeatherModal, 
+    isInitialLoading,
+    isGenerating,
+    error 
+  } = useUserApi(setUsers);
+  
   const fetched = useRef(false);
 
   useEffect(() => {
     if (!fetched.current) {
       fetched.current = true;
-      handleGenerateUser();
+      handleGenerateUser(true);
     }
   }, []);
 
-  if (loading) return <Loader />;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (isInitialLoading) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto min-h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto">
+        <p className="text-destructive text-center text-sm sm:text-base">{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="hidden md:block p-4 max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="p-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {users.map((user, idx) => (
           <UserCard
             key={idx}
@@ -46,13 +68,25 @@ export default function DesktopNewUsers() {
           />
         ))}
 
-        <div
-          onClick={handleGenerateUser}
-          className="border-2 border-dashed border-gray-400 rounded-md shadow-md p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition"
-        >
-          <CirclePlus className="w-16 h-16 text-gray-400" />
-          <span className="mt-2 text-gray-500 font-medium">Add New User</span>
-        </div>
+        {isGenerating && <UserCardSkeleton />}
+
+        {!isGenerating && (
+          <div
+            onClick={() => handleGenerateUser(false)}
+            className="
+              border-2 border-dashed border-border rounded-2xl shadow-md 
+              p-6 sm:p-8 
+              flex flex-col items-center justify-center 
+              cursor-pointer hover:bg-accent transition-all
+              min-h-[300px] sm:min-h-[400px]
+            "
+          >
+            <CirclePlus className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground" />
+            <span className="mt-2 text-muted-foreground font-medium text-sm sm:text-base text-center">
+              Add New User
+            </span>
+          </div>
+        )}
       </div>
 
       {weatherModal && (

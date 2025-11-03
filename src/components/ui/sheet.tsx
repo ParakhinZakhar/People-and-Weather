@@ -4,7 +4,6 @@ import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import { X } from 'lucide-react';
 
 const sheetVariants = cva(
@@ -115,7 +114,6 @@ export const SheetContent = ({
             className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             <X className="w-4 h-4" />
-            Close Menu
           </button>
         </div>
       </div>
